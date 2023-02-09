@@ -2,6 +2,8 @@ require_relative 'view'
 
 module Simpler
   class Controller
+    NOT_FOUND = 404
+
     attr_reader :name, :request, :response
 
     def initialize(env)
@@ -72,6 +74,11 @@ module Simpler
 
     def headers=(key, value)
       @response.headers[key] = value
+    end
+
+    def not_found
+      @response.status = NOT_FOUND
+      @request.env['simpler.body'] = 'Page not found'
     end
   end
 end
