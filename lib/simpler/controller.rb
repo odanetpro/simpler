@@ -53,8 +53,21 @@ module Simpler
       @request.params
     end
 
-    def render(template)
+    def render(options = {})
+      if options[:template]
+        render_template(options[:template])
+      elsif options[:plain]
+        render_plain(options[:plain])
+      end
+    end
+
+    def render_template(template)
       @request.env['simpler.template'] = template
+    end
+
+    def render_plain(text)
+      @response.headers['Content-Type'] = 'text/plain'
+      @request.env['simpler.body'] = text
     end
 
     def status(code)
