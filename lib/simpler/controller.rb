@@ -2,7 +2,6 @@ require_relative 'view'
 
 module Simpler
   class Controller
-
     attr_reader :name, :request, :response
 
     def initialize(env)
@@ -50,5 +49,8 @@ module Simpler
       @request.env['simpler.template'] = template
     end
 
+    def status(code)
+      @response.status = code
+    end
   end
 end
