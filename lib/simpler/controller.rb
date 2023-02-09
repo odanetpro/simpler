@@ -21,14 +21,6 @@ module Simpler
       @response.finish
     end
 
-    def headers
-      @response.headers
-    end
-
-    def headers=(key, value)
-      @response.headers[key] = value
-    end
-
     private
 
     def extract_name
@@ -72,6 +64,14 @@ module Simpler
 
     def status(code)
       @response.status = code
+    end
+
+    def headers
+      @response.headers
+    end
+
+    def headers=(key, value)
+      @response.headers[key] = value
     end
   end
 end
