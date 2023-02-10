@@ -6,11 +6,12 @@ module Simpler
 
     attr_reader :name, :request, :response
 
-    def initialize(env, params)
+    def initialize(env)
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
-      @params = params
+
+      set_params
     end
 
     def make_response(action)
@@ -27,6 +28,17 @@ module Simpler
     private
 
     attr_reader :params
+
+    def set_params
+      path = @request.env['PATH_INFO']
+      query = @request.env['QUERY_STRING']
+      route = @request.env['simpler.route']
+
+      route_params = route.params(path)
+      query_params = Rack::Utils.parse_query(query).transform_keys(&:to_sym)
+
+      @params = route_params.merge(query_params) { |_key, old_value, _new_value| old_value }
+    end
 
     def extract_name
       self.class.name.match('(?<name>.+)Controller')[:name].downcase

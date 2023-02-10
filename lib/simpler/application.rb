@@ -27,8 +27,9 @@ module Simpler
 
     def call(env)
       route = @router.route_for(env)
-      params = route.params(env['PATH_INFO'])
-      controller = route.controller.new(env, params)
+      env['simpler.route'] = route
+
+      controller = route.controller.new(env)
       action = route.action
 
       make_response(controller, action)
