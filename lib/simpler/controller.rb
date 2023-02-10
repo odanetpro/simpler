@@ -6,10 +6,11 @@ module Simpler
 
     attr_reader :name, :request, :response
 
-    def initialize(env)
+    def initialize(env, params)
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
+      @params = params
     end
 
     def make_response(action)
@@ -24,6 +25,8 @@ module Simpler
     end
 
     private
+
+    attr_reader :params
 
     def extract_name
       self.class.name.match('(?<name>.+)Controller')[:name].downcase
@@ -41,10 +44,6 @@ module Simpler
 
     def render_body
       View.new(@request.env).render(binding)
-    end
-
-    def params
-      @request.params
     end
 
     def render(options = {})

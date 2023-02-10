@@ -6,7 +6,6 @@ require_relative 'controller'
 
 module Simpler
   class Application
-
     include Singleton
 
     attr_reader :db
@@ -28,7 +27,8 @@ module Simpler
 
     def call(env)
       route = @router.route_for(env)
-      controller = route.controller.new(env)
+      params = route.params(env['PATH_INFO'])
+      controller = route.controller.new(env, params)
       action = route.action
 
       make_response(controller, action)
@@ -53,6 +53,5 @@ module Simpler
     def make_response(controller, action)
       controller.make_response(action)
     end
-
   end
 end

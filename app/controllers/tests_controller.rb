@@ -4,9 +4,13 @@ class TestsController < Simpler::Controller
 
     # render template: 'tests/list'
     # render plain: 'Plain text response'
-    
+
     # status 201
-    headers['Content-Type'] = 'text/plain'
+    # headers['Content-Type'] = 'text/plain'
+  end
+
+  def show
+    render plain: params[:id]
   end
 
   def create; end
