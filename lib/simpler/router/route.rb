@@ -17,7 +17,7 @@ module Simpler
       end
 
       def params(path)
-        params = path.match(path_regexp).named_captures
+        params = path.match(path_regexp)&.named_captures || {}
         params.transform_keys { |key| key.delete_prefix(':').to_sym }
       end
 
