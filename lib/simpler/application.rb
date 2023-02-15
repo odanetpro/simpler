@@ -6,7 +6,6 @@ require_relative 'controller'
 
 module Simpler
   class Application
-
     include Singleton
 
     attr_reader :db
@@ -28,6 +27,8 @@ module Simpler
 
     def call(env)
       route = @router.route_for(env)
+      env['simpler.route'] = route
+
       controller = route.controller.new(env)
       action = route.action
 
@@ -53,6 +54,5 @@ module Simpler
     def make_response(controller, action)
       controller.make_response(action)
     end
-
   end
 end
